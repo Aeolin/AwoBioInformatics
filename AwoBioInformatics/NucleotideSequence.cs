@@ -26,6 +26,18 @@ namespace AwoBioInformatics
 			return $"{StartCap}-{string.Join("", _nucleotides)}-{EndCap}";
 		}
 
+		public static NucleotideSequence OfLabels(string @string)
+		{
+			if (@string.Contains('-'))
+			{
+				return new NucleotideSequence(@string[2..^2].ToUpper().Select(x => Nucleotide.CharMapping[x]), @string.StartsWith('5'));
+			}
+			else
+			{
+				return new NucleotideSequence(@string.Select(x => Nucleotide.CharMapping[x]));
+			}
+		}
+
 		public NucleotideSequence DnaCounterpart() => new NucleotideSequence(_nucleotides.Select(x => x.DnaCounterpart), !Order);
 		public NucleotideSequence RnaCounterpart() => new NucleotideSequence(_nucleotides.Select(x => x.RnaCounterpart), !Order);
 

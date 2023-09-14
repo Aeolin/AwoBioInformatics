@@ -42,17 +42,7 @@ namespace AwoBioInformatics
 			CharMapping = All.ToDictionary(x => x.Label);
 		}
 
-		public static NucleotideSequence SequenceOf(string @string)
-		{
-			if (@string.Contains('-'))
-			{
-				return new NucleotideSequence(@string[2..^2].Select(x => CharMapping[x]), @string.StartsWith('5'));
-			}
-			else
-			{
-				return new NucleotideSequence(@string.Select(x => CharMapping[x]));
-			}
-		}
+		public static Nucleotide OfChar(char c) => All.First(x => x.Label == char.ToUpper(c));
 
 		public char Label { get; set; }
 		public Nucleotide DnaCounterpart { get; private set; }
