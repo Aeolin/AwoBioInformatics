@@ -23,13 +23,15 @@ while (true)
 		var seq = Console.ReadLine();
 		if (sType.Key == ConsoleKey.R)
 		{
-			Console.WriteLine("ShortCodes: " + ProteinSequence.OfRna(seq).ToShortCodes());
-			Console.WriteLine("Labels: " + ProteinSequence.OfRna(seq).ToLabels());
+			var proteins = AminoAcidSequence.OfRna(seq).ToArray();
+			Console.WriteLine($"Found {proteins.Length} proteins");
+			foreach(var protein in proteins)
+				Console.WriteLine(protein);
 		}
 		else
 		{
-			Console.WriteLine($"Rna: " + ProteinSequence.OfShortCodes(seq).ToRna());
-			Console.WriteLine("Labels: " + ProteinSequence.OfShortCodes(seq).ToLabels());
+			Console.WriteLine($"Rna: " + AminoAcidSequence.OfShortCodes(seq).ToRna());
+			Console.WriteLine("Labels: " + AminoAcidSequence.OfShortCodes(seq).ToLabels());
 		}
 	}
 
