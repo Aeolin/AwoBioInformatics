@@ -2,6 +2,13 @@
 
 while (true)
 {
+	var aminoCol = AminoAcidSequence.OfLabels("EKAN");
+	var aminoRow = AminoAcidSequence.OfLabels("GRAS");
+	var alignMent = new Alignment<AminoAcid, int>(aminoCol, aminoRow, -6, AminoAcid.GetPam250Score);
+	alignMent.Align();
+
+
+
 	Console.Write("Enter a sequence type (N)ucleotide / (P)rotein: ");
 	var type = Console.ReadKey();
 	Console.WriteLine();

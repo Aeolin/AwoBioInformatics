@@ -18,12 +18,10 @@ namespace AwoBioInformatics
 		}
 
 		public bool Order { get; set; }
-		public char StartCap => Order ? '5' : '3';
-		public char EndCap => Order ? '3' : '5';
 
 		public override string ToString()
 		{
-			return $"{StartCap}-{string.Join("", _nucleotides)}-{EndCap}";
+			return $"5-{string.Join("", Order ? _nucleotides : _nucleotides.Reverse())}-3";
 		}
 
 		public static NucleotideSequence OfLabels(string @string)

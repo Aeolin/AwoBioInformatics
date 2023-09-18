@@ -15,6 +15,8 @@ namespace AwoBioInformatics
 		public static readonly ImmutableDictionary<string, AminoAcid> ShortCodeMapping;
 		public static readonly ImmutableDictionary<char, AminoAcid> LabelMapping;
 		public static readonly ImmutableDictionary<string, AminoAcid> CodonMapping;
+		public static readonly ImmutableDictionary<string, int> Pam250;
+		public static readonly ImmutableDictionary<string, int> Blosum;
 		public static readonly string[] StopCodonCodes;
 		public static readonly string StartCodon;
 
@@ -45,7 +47,12 @@ namespace AwoBioInformatics
 
 			CodonMapping = tempDict.ToImmutableDictionary();
 			LabelMapping = All.ToImmutableDictionary(x => x.Label);
+			Pam250 = Utils.ParseMatrix<string, int>(Resource.Pam250.ToUpper(), int.Parse, (s1, s2) => s1+s2).ToImmutableDictionary();
+			Blosum = Utils.ParseMatrix<string, int>(Resource.Blosum.ToUpper(), int.Parse, (s1, s2) => s1+s2).ToImmutableDictionary();
 		}
+
+		public static int GetPam250Score(AminoAcid a1, AminoAcid a2) => Pam250[$"{a1.Label}{a2.Label}"];
+		public static int GetBlosumScore(AminoAcid a1, AminoAcid a2) => Blosum[$"{a1.Label}{a2.Label}"];
 
 		public static AminoAcid OfShortCode(string shortCode) => ShortCodeMapping[shortCode.ToLower()];
 		public static AminoAcid OfLabel(char label) => LabelMapping[char.ToUpper(label)];
