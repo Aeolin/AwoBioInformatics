@@ -25,25 +25,24 @@ namespace AwoBioInformatics.AlignmentAlgorithms
 			StringFunc = stringFunc ?? (x => x.ToString());
 		}
 
-
 		public string Align(out N[,] matrix, out StepType[,] steps)
 		{
 			matrix = new N[SourceColumn.Length + 1, SourceRow.Length + 1];
 			steps = new StepType[SourceColumn.Length + 1, SourceRow.Length + 1];
-			for (int i = 0; i < Math.Max(SourceColumn.Length, SourceRow.Length); i++)
+			for (int i = 0; i < Math.Max(SourceColumn.Length+1, SourceRow.Length+1); i++)
 			{
-				if (i < SourceColumn.Length)
+				if (i <= SourceColumn.Length)
 					matrix[i, 0] = GapPenalty * N.CreateChecked(i);
 
-				if (i < SourceRow.Length)
+				if (i <= SourceRow.Length)
 					matrix[0, i] = GapPenalty * N.CreateChecked(i);
 			}
 
 			int x, y;
 
-			for (y = 1; y < SourceRow.Length; y++)
+			for (y = 1; y < SourceRow.Length+1; y++)
 			{
-				for (x = 1; x < SourceColumn.Length; x++)
+				for (x = 1; x < SourceColumn.Length+1; x++)
 				{
 					var score = ScoringFunction(SourceColumn[x-1], SourceRow[y-1]);
 					var left = matrix[x - 1, y] + GapPenalty;

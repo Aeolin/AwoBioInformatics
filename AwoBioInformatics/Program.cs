@@ -8,11 +8,20 @@ while (true)
 	//var alignMent = new Alignment<AminoAcid, int>(aminoCol, aminoRow, -6, AminoAcid.GetPam250Score);
 	//alignMent.Align();
 
-	var alignment = new Alignment<AminoAcid, int>(AminoAcidSequence.OfLabels("IWFHGREE"), AminoAcidSequence.OfLabels("WCHLREPD"), -8, AminoAcid.GetBlosumScore, x => x.Label.ToString());
+	var seq1 = AminoAcidSequence.OfLabels("IWFHGREE");
+	var seq2 = AminoAcidSequence.OfLabels("WCHLREPD");
+	var alignment = new Alignment<AminoAcid, int>(seq1, seq2, -8, AminoAcid.GetBlosumScore, x => x.Label.ToString());
 	var aligned = alignment.Align(out var matrix, out var steps);
 
 
 	Console.WriteLine(aligned);
+	var seq1str = seq1.Select(x => x.Label.ToString()).ToList();
+	var seq2str = seq2.Select(x => x.Label.ToString()).ToList();
+	seq1str.Insert(0, "");
+	seq2str.Insert(0, "");
+	Console.WriteLine(Utils.PrintMatrixGeneric(seq1str.ToArray(), seq2str.ToArray(), matrix));
+	Console.WriteLine(Utils.PrintMatrixGeneric(seq1str.ToArray(), seq2str.ToArray(), steps, Utils.StepTypeToString));
+	Console.WriteLine(Utils.SubstitutionMatrix(seq1, seq2, AminoAcid.GetBlosumScore, x => x.Label.ToString()));
 
 	Console.Write("Enter a sequence type (N)ucleotide / (P)rotein: ");
 	var type = Console.ReadKey();
