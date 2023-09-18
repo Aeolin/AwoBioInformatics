@@ -19,6 +19,17 @@ namespace AwoBioInformatics
 
 		public static AminoAcidSequence OfShortCodes(string @string) => new AminoAcidSequence(@string.ToLower().Split(' ').Select(x => AminoAcid.OfShortCode(x)).ToArray());
 		public static AminoAcidSequence OfLabels(string @string) => new AminoAcidSequence(@string.Select(x => AminoAcid.OfLabel(x)).ToArray());
+		public static AminoAcidSequence OfNucleotides(IEnumerable<Nucleotide> nucleotides)
+		{
+			var array = nucleotides.ToArray();
+			var res = new List<AminoAcid>();
+			for (int i = 0; i < array.Length; i += 3)
+			{
+				res.Add(AminoAcid.OfCodon(string.Join("", array.Skip(i).Take(3).Select(x => x.Label.ToString()))));
+			}
+
+			return new AminoAcidSequence(res.ToArray());
+		}
 
 		public IEnumerable<Protein> FindProteins()
 		{
@@ -38,10 +49,10 @@ namespace AwoBioInformatics
 		{
 			rna = rna.ToUpper();
 			int index;
-			while (rna.Length >= 3 && (index = rna.IndexOf(AminoAcid.StartCodon)) > 0)
+			var list = new List<AminoAcid>();
+			while (rna.Length >= 3 && (index = rna.IndexOf(AminoAcid.StartCodon)) >= 0)
 			{
 				rna = rna[index..];
-				var list = new List<AminoAcid>();
 				while (rna.Length > 3)
 				{
 					var codon = rna[0..3];
@@ -49,14 +60,18 @@ namespace AwoBioInformatics
 					{
 						rna = rna[3..];
 						yield return new Protein(new AminoAcidSequence(list));
+						list.Clear();
 						break;
 					}
 
-					var protein = AminoAcid.OfCodon(codon);
-					list.Add(protein);
+					var amino = AminoAcid.OfCodon(codon);
+					list.Add(amino);
 					rna = rna[3..];
 				}
 			}
+
+			if (list.Count > 0)
+				yield return new Protein(new AminoAcidSequence(list));
 		}
 
 		public string ToShortCodes() => string.Join(" ", _proteins.Select(x => x.ShortCode));

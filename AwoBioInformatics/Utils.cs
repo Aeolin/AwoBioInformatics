@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,13 @@ namespace AwoBioInformatics
 				}
 			}
 
+			return result;
+		}
+
+		public static N AMax<N>(out int index, params N[] values) where N : IMinMaxValue<N> 
+		{
+			var result = values.Max();
+			index = Array.IndexOf(values, result);
 			return result;
 		}
 	}

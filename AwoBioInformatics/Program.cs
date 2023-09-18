@@ -1,13 +1,18 @@
 ﻿using AwoBioInformatics;
+using AwoBioInformatics.AlignmentAlgorithms;
 
 while (true)
 {
-	var aminoCol = AminoAcidSequence.OfLabels("EKAN");
-	var aminoRow = AminoAcidSequence.OfLabels("GRAS");
-	var alignMent = new Alignment<AminoAcid, int>(aminoCol, aminoRow, -6, AminoAcid.GetPam250Score);
-	alignMent.Align();
+	//var aminoCol = AminoAcidSequence.OfLabels("EKAN");
+	//var aminoRow = AminoAcidSequence.OfLabels("GRAS");
+	//var alignMent = new Alignment<AminoAcid, int>(aminoCol, aminoRow, -6, AminoAcid.GetPam250Score);
+	//alignMent.Align();
+
+	var alignment = new Alignment<AminoAcid, int>(AminoAcidSequence.OfLabels("IWFHGREE"), AminoAcidSequence.OfLabels("WCHLREPD"), -8, AminoAcid.GetBlosumScore, x => x.Label.ToString());
+	var aligned = alignment.Align(out var matrix, out var steps);
 
 
+	Console.WriteLine(aligned);
 
 	Console.Write("Enter a sequence type (N)ucleotide / (P)rotein: ");
 	var type = Console.ReadKey();
@@ -30,9 +35,9 @@ while (true)
 		var seq = Console.ReadLine();
 		if (sType.Key == ConsoleKey.R)
 		{
-			var proteins = AminoAcidSequence.OfRna(seq).ToArray();
+			var proteins = AminoAcidSequence.OfRna(seq.ToUpper().Replace(Nucleotide.T.Label, Nucleotide.U.Label)).ToArray();
 			Console.WriteLine($"Found {proteins.Length} proteins");
-			foreach(var protein in proteins)
+			foreach (var protein in proteins)
 				Console.WriteLine(protein);
 		}
 		else
