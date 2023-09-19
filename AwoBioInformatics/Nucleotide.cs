@@ -15,6 +15,7 @@ namespace AwoBioInformatics
 		public static readonly Nucleotide U;
 
 		public static readonly Nucleotide[] All;
+		public static readonly Nucleotide[] DnaParts;
 		public static readonly Dictionary<char, Nucleotide> CharMapping;
 
 		static Nucleotide()
@@ -39,6 +40,7 @@ namespace AwoBioInformatics
 
 			U.DnaCounterpart = A;
 			All = new[] { A, G, C, T, U };
+			DnaParts = new[] { A, T, C, G };
 			CharMapping = All.ToDictionary(x => x.Label);
 		}
 

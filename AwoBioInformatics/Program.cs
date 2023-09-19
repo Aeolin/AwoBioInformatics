@@ -1,5 +1,6 @@
 ﻿using AwoBioInformatics;
 using AwoBioInformatics.AlignmentAlgorithms;
+using AwoBioInformatics.ScoringAlogrithms;
 
 while (true)
 {
@@ -7,6 +8,18 @@ while (true)
 	//var aminoRow = AminoAcidSequence.OfLabels("GRAS");
 	//var alignMent = new Alignment<AminoAcid, int>(aminoCol, aminoRow, -6, AminoAcid.GetPam250Score);
 	//alignMent.Align();
+
+
+	var matrix1 = new double[,]
+	{
+		{ 0.06D, -0.25D, -2.32D, 1.38D, 0.71D, -0.12D },
+		{ -0.40D, 0.21D, -0.74D, -1.18D, -1.64D, -0.18D },
+		{ -0.06D, 0.64D, -0.25D, -0.25D, -0.84D, -0.25D },
+		{ 0.31D, -1.18D, 1.24D, -3.06D, 0.57D, 0.44D }
+	};
+
+	var scoring = new BaseScoringAlgorithm<Nucleotide, double>(Nucleotide.DnaParts, matrix1, (a, b) => a+b, 3);
+	var (best, score) = scoring.BestIndex(NucleotideSequence.OfLabels("GCAAGAGT"));
 
 	var seq1 = AminoAcidSequence.OfLabels("IWFHGREE");
 	var seq2 = AminoAcidSequence.OfLabels("WCHLREPD");
