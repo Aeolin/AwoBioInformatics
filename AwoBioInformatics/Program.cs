@@ -26,6 +26,10 @@ while (true)
 	var alignment = new Alignment<AminoAcid, int>(seq1, seq2, -8, AminoAcid.GetBlosumScore, x => x.Label.ToString());
 	var aligned = alignment.Align(out var matrix, out var steps);
 
+	var aseq1 = AminoAcidSequence.OfLabels("VVVKKKDDDSSS").ToArray();
+	var aseq2 = AminoAcidSequence.OfLabels("AIDERHFNETYM").ToArray();
+	Console.WriteLine(string.Join('\n', Enumerable.Range(0, aseq1.Length).Select(x => $"{aseq1[x].Label} -> {aseq2[x].Label}: {AminoAcid.GetBlosumScore(aseq1[x], aseq2[x])}")));
+
 
 	Console.WriteLine(aligned);
 	var seq1str = seq1.Select(x => x.Label.ToString()).ToList();
